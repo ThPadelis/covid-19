@@ -45,3 +45,8 @@
     background-color: $blue-600;
   }
 }
+
+// Sweet Alert
+.swal2-container.swal2-bottom.swal2-backdrop-show > div {
+  box-shadow: none;
+}

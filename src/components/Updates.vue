@@ -1,5 +1,5 @@
 <template>
-  <div class="updates rounded-lg">
+  <div class="updates">
     <div class="updates__header">
       <span class="fad fa-bullhorn"></span>
       <span>Updates</span>
@@ -27,6 +27,8 @@ export default {
   background: $blue-600;
   padding: 20px;
   position: relative;
+  border-radius: 0.3rem;
+  margin-bottom: 20px;
 
   .updates__header {
     font-size: 2em;

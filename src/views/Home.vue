@@ -5,6 +5,8 @@
         <updates
           text="Lorem ipsum dolor sit amet consectetur, adipisicing elit.Lorem ipsum dolor sit amet consectetur, adipisicing elit.Lorem ipsum dolor sit amet consectetur, adipisicing elit."
         ></updates>
+
+        <glance></glance>
       </b-col>
     </b-row>
   </b-container>
@@ -16,6 +18,8 @@ export default {
   components: {
     Updates: () =>
       import(/* webpackChunkName: "updates" */ "@/components/Updates.vue"),
+    Glance: () =>
+      import(/* webpackChunkName: "glance" */ "@/components/Glance.vue"),
   },
 };
 </script>

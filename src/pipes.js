@@ -1,7 +1,8 @@
 import Vue from "vue";
+import * as moment from "moment/moment";
 
-Vue.filter("capitalize", function(value) {
+Vue.filter("moment", function(value, isDuration = false, format = "LL") {
   if (!value) return "";
-  value = value.toString();
-  return value.charAt(0).toUpperCase() + value.slice(1);
+  if (isDuration) return moment(value).fromNow();
+  return moment(value).format(format);
 });
