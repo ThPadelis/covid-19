@@ -31,6 +31,7 @@ export default {
 .navbar {
   border-bottom: solid 2px $blue-300;
   background: $blue-500;
+  margin-bottom: 20px;
 
   .navbar-nav {
     .nav-item {
