@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <Navbar />
-
     <router-view />
+    <AppFooter />
   </div>
 </template>
 
@@ -12,6 +12,8 @@ export default {
   components: {
     Navbar: () =>
       import(/* webpackChunkName: "Navbar" */ "@/components/Navbar.vue"),
+    AppFooter: () =>
+      import(/* webpackChunkName: "AppFooter" */ "@/components/Footer.vue"),
   },
 };
 </script>

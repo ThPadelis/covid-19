@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "source",
+  name: "source-item",
   props: {
     source: { type: Object, required: true },
   },
