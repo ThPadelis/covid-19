@@ -1,15 +1,17 @@
 <template>
-  <div class="updates">
+  <b-alert show dismissible class="updates">
     <div class="updates__header">
       <span class="fad fa-bullhorn"></span>
       <span>Updates</span>
     </div>
     <div class="updates__body">{{text}}</div>
 
-    <div class="updates__close" v-if="dismissible">
-      <span class="fa fa-times" v-b-tooltip.hover title="Hide!"></span>
-    </div>
-  </div>
+    <template slot="dismiss">
+      <div class="updates__close">
+        <span class="fa fa-times" v-b-tooltip.hover title="Hide!"></span>
+      </div>
+    </template>
+  </b-alert>
 </template>
 
 <script>
@@ -17,7 +19,6 @@ export default {
   name: "updates",
   props: {
     text: { type: String, required: true },
-    dismissible: { type: Boolean, default: false },
   },
 };
 </script>
@@ -57,12 +58,16 @@ export default {
     position: absolute;
     top: 4px;
     right: 14px;
-    font-size: 2em;
+    font-size: 0.8em;
     color: $blue-60;
 
     &:hover {
       cursor: pointer;
       color: $danger;
+    }
+
+    &:focus {
+      outline: none;
     }
   }
 }
