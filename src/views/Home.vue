@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container class="home" fluid>
     <b-row>
       <b-col sm="12" md="3" lg="3" xl="3">
         <updates
@@ -8,11 +8,30 @@
 
         <glance></glance>
       </b-col>
+
+      <!-- Main content -->
+      <b-col sm="12" md="9" lg="9" xl="9">
+        <b-nav v-if="continents">
+          <b-nav-text
+            v-for="(c, i ) in continents"
+            :key="i"
+            @click="getContinent(c)"
+            :class="isActive(c)"
+          >
+            <span :class="getIcon(c)"></span>
+            <span>{{c.continent}}</span>
+          </b-nav-text>
+        </b-nav>
+
+        <continent v-if="continent" :continent="continent"></continent>
+      </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
+import { Endpoints } from "../config/endpoints";
+import { Continent } from "../classes/Continent";
 export default {
   name: "Home",
   components: {
@@ -20,6 +39,86 @@ export default {
       import(/* webpackChunkName: "updates" */ "@/components/Updates.vue"),
     Glance: () =>
       import(/* webpackChunkName: "glance" */ "@/components/Glance.vue"),
+    Continent: () =>
+      import(/* webpackChunkName: "continent" */ "@/components/Continent.vue"),
+  },
+  data: () => ({
+    continents: null,
+    continent: null,
+  }),
+  mounted() {
+    this.getContinents();
+  },
+  methods: {
+    async getContinents() {
+      const { data: continents } = await this.$http.get(
+        `${Endpoints.continents}`
+      );
+
+      this.continents = continents
+        .map((c) =>
+          String(c.continent).includes("/")
+            ? new Continent({ ...c, continent: c.continent.split("/")[1] })
+            : new Continent(c)
+        )
+        .sort((a, b) => (a.continent > b.continent ? 1 : -1));
+      this.continent = this.continents[0];
+    },
+    getContinent(continent) {
+      this.continent = continent;
+    },
+    isActive(continent) {
+      if (!this.continent) return null;
+      return continent.continent === this.continent.continent
+        ? "border-danger"
+        : null;
+    },
+    getIcon(continent) {
+      switch (continent.continent) {
+        case "Africa":
+          return "fad fa-globe-africa";
+        case "Asia":
+          return "fad fa-globe-asia";
+        case "Europe":
+          return "fad fa-globe-europe";
+        case "North America":
+          return "fad fa-globe-americas";
+        case "Oceania":
+          return "fad fa-globe-europe";
+        case "South America":
+          return "fad fa-globe-americas";
+        default:
+          return "";
+      }
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.home {
+  .nav {
+    margin-bottom: 20px;
+    .navbar-text {
+      padding: 10px 15px;
+      border: solid 2px transparent;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1.25em;
+
+      &:not(:last-of-type) {
+        margin-right: 10px;
+      }
+
+      &:hover {
+        border-color: $blue-300;
+        cursor: pointer;
+      }
+
+      > span:first-of-type {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+</style>
