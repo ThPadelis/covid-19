@@ -34,17 +34,35 @@
         </div>
       </div>
     </div>
+
+    <div class="continent__body" v-if="countries">
+      <alt-table :countries="countries"></alt-table>
+    </div>
   </div>
 </template>
 
 <script>
 import { Continent } from "../classes/Continent";
+import { Endpoints } from "../config/endpoints";
 export default {
   name: "continent",
   props: {
     continent: {
       type: Continent,
       required: true,
+    },
+  },
+  components: {
+    "alt-table": () =>
+      import(/* webpackChunkName: "alt-table" */ "@/components/Table.vue"),
+  },
+  data: () => ({
+    countries: null,
+    isLoading: false,
+  }),
+  watch: {
+    continent: function (value) {
+      this.getCountries(value.continent);
     },
   },
   computed: {
@@ -89,6 +107,29 @@ export default {
       if (!this.continent) return 0;
       return this.continent.recovered;
     },
+  },
+  methods: {
+    async getCountries() {
+      if (!this.continent) return;
+
+      this.isLoading = true;
+
+      const baseURLs = this.continent.countries.map(
+        (c) => `${Endpoints.countries}/${c}`
+      );
+      const promises = baseURLs.map((url) => this.$http.get(url));
+
+      const countries = await Promise.all(promises);
+
+      this.countries = countries.map((c) => c.data);
+
+      this.isLoading = false;
+
+      console.log({ countries: this.countries });
+    },
+  },
+  async mounted() {
+    await this.getCountries();
   },
 };
 </script>
@@ -155,5 +196,8 @@ export default {
       }
     }
   }
+
+  // .continent__body {
+  // }
 }
 </style>

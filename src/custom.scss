@@ -50,3 +50,21 @@
 .swal2-container.swal2-bottom.swal2-backdrop-show > div {
   box-shadow: none;
 }
+
+// Tables
+.table-dark {
+  background-color: $blue-700;
+}
+
+.table-dark.table-striped tbody tr:nth-of-type(odd) {
+  background-color: $blue-600;
+}
+
+.table.b-table > thead > tr > [aria-sort="none"],
+.table.b-table > tfoot > tr > [aria-sort="none"] {
+  background-image: url("./assets/sort-none.svg");
+}
+.table.b-table > thead > tr > [aria-sort="ascending"],
+.table.b-table > tfoot > tr > [aria-sort="ascending"] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'%3e%3cpath fill='red' d='M51 1l25 23 24 22H1l25-22z'/%3e%3cpath fill='black' opacity='.3' d='M51 101l25-23 24-22H1l25 22z'/%3e%3c/svg%3e");
+}
