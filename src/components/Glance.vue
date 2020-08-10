@@ -52,6 +52,7 @@
 
 <script>
 import { Endpoints } from "../config/endpoints";
+import { EventBus } from "../event-bus";
 export default {
   name: "glance",
   components: {
@@ -92,6 +93,7 @@ export default {
       .get(Endpoints.all)
       .then((response) => {
         this.all = response.data;
+        EventBus.$emit("world", this.all);
       })
       .catch((error) => {
         this.all = null;

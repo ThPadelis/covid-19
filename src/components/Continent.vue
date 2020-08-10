@@ -1,10 +1,26 @@
 <template>
   <div class="continent">
     <div class="continent__header">
-      <div class="title">
-        <span :class="getIcon"></span>
-        <span>{{getTitle}}</span>
+      <div class="title__wrapper">
+        <div class="title">
+          <span :class="getIcon"></span>
+          <span>{{getTitle}}</span>
+        </div>
+
+        <div class="search">
+          <b-input-group prepend="Search">
+            <b-form-input
+              v-model="filter"
+              type="search"
+              id="filterInput"
+              @keyup="emitFilter($event)"
+              autocomplete="off"
+            ></b-form-input>
+          </b-input-group>
+        </div>
       </div>
+
+      <div></div>
 
       <div class="glance">
         <!-- Confirmed -->
@@ -36,7 +52,7 @@
     </div>
 
     <div class="continent__body" v-if="countries">
-      <alt-table :countries="countries"></alt-table>
+      <alt-table :countries="countries" :filter="filter"></alt-table>
     </div>
   </div>
 </template>
@@ -59,6 +75,8 @@ export default {
   data: () => ({
     countries: null,
     isLoading: false,
+    filter: "",
+    oldValue: null,
   }),
   watch: {
     continent: function (value) {
@@ -111,12 +129,11 @@ export default {
   methods: {
     async getCountries() {
       if (!this.continent) return;
-
       this.isLoading = true;
 
-      const baseURLs = this.continent.countries.map(
-        (c) => `${Endpoints.countries}/${c}`
-      );
+      const baseURLs = this.continent.countries
+        .sort()
+        .map((c) => `${Endpoints.countries}/${c}`);
       const promises = baseURLs.map((url) => this.$http.get(url));
 
       const countries = await Promise.all(promises);
@@ -124,8 +141,12 @@ export default {
       this.countries = countries.map((c) => c.data);
 
       this.isLoading = false;
+    },
+    emitFilter(event) {
+      const { value } = event.target;
+      if (this.oldValue === value) return;
 
-      console.log({ countries: this.countries });
+      this.oldValue = value;
     },
   },
   async mounted() {
@@ -143,12 +164,50 @@ export default {
   margin-bottom: 20px;
 
   .continent__header {
-    .title {
-      font-size: 2em;
-      font-weight: bold;
+    .title__wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
-      > span:first-of-type {
-        margin-right: 10px;
+
+      .title {
+        font-size: 2em;
+        font-weight: bold;
+        > span:first-of-type {
+          margin-right: 10px;
+        }
+      }
+
+      .search {
+        width: 20em;
+
+        .input-group {
+          .input-group-prepend {
+            .input-group-text {
+              color: $blue-30;
+              font-weight: 600;
+              font-size: 1.2em;
+              &::after {
+                content: ":";
+                margin-right: 5px;
+              }
+            }
+          }
+
+          .form-control {
+            color: $blue-30;
+            padding: 10px 15px;
+            border: solid 2px transparent;
+            border-radius: 10px;
+            box-shadow: none;
+            background: $blue-700;
+
+            &:hover,
+            &:focus {
+              border-color: $danger;
+            }
+          }
+        }
       }
     }
 
@@ -156,6 +215,7 @@ export default {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      margin-top: 10px;
       .label {
         font-size: 1.25em;
         &:not(:last-of-type)::after {
@@ -196,8 +256,5 @@ export default {
       }
     }
   }
-
-  // .continent__body {
-  // }
 }
 </style>

@@ -26,8 +26,8 @@ export default {
       { text: "home", to: "/" },
       { text: "about", to: "/about" },
       { text: "sources", to: "/sources" },
-      { text: "what to do", to: "/advices" },
-      { text: "travel restrictions", to: "/travel" },
+      // { text: "what to do", to: "/advices" },
+      // { text: "travel restrictions", to: "/travel" },
     ],
   }),
 };

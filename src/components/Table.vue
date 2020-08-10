@@ -70,37 +70,22 @@
       </template>
 
       <template v-slot:row-details="row">
-        <pre>{{row.item}}</pre>
+        <!-- <pre>{{row.item}}</pre> -->
+        <b-card class="bg-transparent text-muted shadow-none">
+          <b-card-text>Details for {{row.item.country}} will be displayed here</b-card-text>
+        </b-card>
       </template>
     </b-table>
 
-    <!-- User Interface controls -->
-
-    <!-- <b-form-group
-      label="Filter"
-      label-cols-sm="3"
-      label-align-sm="right"
-      label-size="sm"
-      label-for="filterInput"
-      class="mb-0"
-    >
-      <b-input-group size="sm">
-        <b-form-input v-model="filter" type="search" id="filterInput" placeholder="Type to Search"></b-form-input>
-        <b-input-group-append>
-          <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-        </b-input-group-append>
-      </b-input-group>
-    </b-form-group>-->
-
+    <!-- Pagination -->
     <b-pagination
       v-model="currentPage"
       :total-rows="totalRows"
       :per-page="perPage"
       align="end"
-      limit="3"
       class="my-0"
+      hide-goto-end-buttons
     ></b-pagination>
-    <!-- size="sm" -->
   </div>
 </template>
 
@@ -112,6 +97,16 @@ export default {
     countries: {
       type: Array,
       required: true,
+    },
+    filter: {
+      type: String,
+      default: "",
+    },
+  },
+  watch: {
+    countries(val) {
+      this.totalRows = val.length;
+      this.currentPage = 1;
     },
   },
   data() {
@@ -168,7 +163,6 @@ export default {
       totalRows: 1,
       currentPage: 1,
       perPage: 10,
-      filter: null,
       filterOn: [],
     };
   },
@@ -210,6 +204,7 @@ export default {
 .table {
   color: inherit;
   font-size: 1.25em;
+  margin-top: 1em;
   tbody {
     tr {
       td {
@@ -268,6 +263,36 @@ export default {
             margin-right: 10px;
           }
         }
+      }
+    }
+  }
+}
+
+.pagination {
+  .page-item {
+    &.active,
+    &:hover {
+      .page-link {
+        background: $blue-700;
+        color: $danger;
+        box-shadow: none;
+      }
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      .page-link {
+        background: $blue-600;
+        color: $blue-30;
+      }
+    }
+
+    .page-link {
+      background: $blue-600;
+      border-color: $blue-90;
+      color: $blue-30;
+      &:focus {
+        box-shadow: none;
       }
     }
   }

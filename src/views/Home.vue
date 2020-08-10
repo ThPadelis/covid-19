@@ -32,6 +32,7 @@
 <script>
 import { Endpoints } from "../config/endpoints";
 import { Continent } from "../classes/Continent";
+import { EventBus } from "../event-bus";
 export default {
   name: "Home",
   components: {
@@ -45,6 +46,7 @@ export default {
   data: () => ({
     continents: null,
     continent: null,
+    world: null,
   }),
   mounted() {
     this.getContinents();
@@ -54,6 +56,20 @@ export default {
       const { data: continents } = await this.$http.get(
         `${Endpoints.continents}`
       );
+
+      EventBus.$once("world", (data) => {
+        const world = {
+          ...data,
+          countries: [].concat.apply(
+            [],
+            continents.map((c) => c.countries).sort()
+          ),
+          continent: "World",
+          continentInfo: null,
+        };
+        this.world = new Continent(world);
+        this.continents.push(this.world);
+      });
 
       this.continents = continents
         .map((c) =>
@@ -87,6 +103,8 @@ export default {
           return "fad fa-globe-europe";
         case "South America":
           return "fad fa-globe-americas";
+        case "World":
+          return "fad fa-globe";
         default:
           return "";
       }
