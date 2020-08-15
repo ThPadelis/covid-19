@@ -23,7 +23,15 @@
           </b-nav-text>
         </b-nav>
 
-        <continent v-if="continent" :continent="continent"></continent>
+        <b-overlay
+          :show="isLoading"
+          rounded="sm"
+          opacity="0.85"
+          variant="transparent"
+          blur="0.75em"
+        >
+          <continent v-if="continent" :continent="continent"></continent>
+        </b-overlay>
       </b-col>
     </b-row>
   </b-container>
@@ -47,29 +55,34 @@ export default {
     continents: null,
     continent: null,
     world: null,
+    isLoading: false,
   }),
+  created() {
+    EventBus.$on("world", (data) => {
+      const world = {
+        ...data,
+        countries: [].concat.apply(
+          [],
+          this.continents.map((c) => c.countries).sort()
+        ),
+        continent: "World",
+        continentInfo: null,
+      };
+      this.world = new Continent(world);
+      this.continents.unshift(this.world);
+      this.continent = this.continents[0];
+    });
+  },
   mounted() {
     this.getContinents();
   },
   methods: {
     async getContinents() {
+      this.isLoading = true;
+
       const { data: continents } = await this.$http.get(
         `${Endpoints.continents}`
       );
-
-      EventBus.$once("world", (data) => {
-        const world = {
-          ...data,
-          countries: [].concat.apply(
-            [],
-            continents.map((c) => c.countries).sort()
-          ),
-          continent: "World",
-          continentInfo: null,
-        };
-        this.world = new Continent(world);
-        this.continents.push(this.world);
-      });
 
       this.continents = continents
         .map((c) =>
@@ -79,6 +92,10 @@ export default {
         )
         .sort((a, b) => (a.continent > b.continent ? 1 : -1));
       this.continent = this.continents[0];
+
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 500);
     },
     getContinent(continent) {
       this.continent = continent;
@@ -106,7 +123,7 @@ export default {
         case "World":
           return "fad fa-globe";
         default:
-          return "";
+          return "fad fa-globe";
       }
     },
   },

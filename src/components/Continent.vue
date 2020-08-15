@@ -101,8 +101,10 @@ export default {
           return "fad fa-globe-europe";
         case "South America":
           return "fad fa-globe-americas";
+        case "World":
+          return "fad fa-globe";
         default:
-          return "";
+          return "fad fa-globe";
       }
     },
     cases() {
