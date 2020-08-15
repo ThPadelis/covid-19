@@ -10,11 +10,8 @@
       dark
       :items="countries"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
       :filter="filter"
       :filterIncludedFields="filterOn"
-      @filtered="onFiltered"
     >
       <!-- Country -->
       <template v-slot:cell(country)="row">
@@ -63,29 +60,19 @@
           @click="row.toggleDetails"
           :class="row.detailsShowing ? 'fas fa-minus-circle' : 'fas fa-plus-circle'"
         ></span>
-        <!-- <b-button
-          size="sm"
-          @click="row.toggleDetails"
-        >{{ row.detailsShowing ? 'Hide' : 'Show' }} Details</b-button>-->
       </template>
 
       <template v-slot:row-details="row">
-        <!-- <pre>{{row.item}}</pre> -->
-        <b-card class="bg-transparent text-muted shadow-none">
+        <!-- <b-card class="bg-transparent text-muted shadow-none">
           <b-card-text>Details for {{row.item.country}} will be displayed here</b-card-text>
+        </b-card>-->
+        <b-card class="bg-transparent text-warning shadow-none">
+          <ul>
+            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
+          </ul>
         </b-card>
       </template>
     </b-table>
-
-    <!-- Pagination -->
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="totalRows"
-      :per-page="perPage"
-      align="end"
-      class="my-0"
-      hide-goto-end-buttons
-    ></b-pagination>
   </div>
 </template>
 
@@ -101,12 +88,6 @@ export default {
     filter: {
       type: String,
       default: "",
-    },
-  },
-  watch: {
-    countries(val) {
-      this.totalRows = val.length;
-      this.currentPage = 1;
     },
   },
   data() {
@@ -160,15 +141,8 @@ export default {
           filterByFormatted: true,
         },
       ],
-      totalRows: 1,
-      currentPage: 1,
-      perPage: 10,
       filterOn: [],
     };
-  },
-  mounted() {
-    // Set the initial number of items
-    this.totalRows = this.countries.length;
   },
   methods: {
     getFlag(value) {
@@ -190,11 +164,6 @@ export default {
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
-    },
-    onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
     },
   },
 };
