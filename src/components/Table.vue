@@ -54,24 +54,21 @@
         >{{getRecoveredToday(row) | number('0,0', { thousandsSeparator: ',' }) }}</small>
       </template>
 
-      <template v-slot:cell(actions)="row">
+      <!-- Actions -->
+      <!-- <template v-slot:cell(actions)="row">
         <span @click="info(row.item, row.index, $event.target)" class="fal fa-star"></span>
         <span
           @click="row.toggleDetails"
           :class="row.detailsShowing ? 'fas fa-minus-circle' : 'fas fa-plus-circle'"
         ></span>
-      </template>
+      </template>-->
 
-      <template v-slot:row-details="row">
-        <!-- <b-card class="bg-transparent text-muted shadow-none">
+      <!-- Details -->
+      <!-- <template v-slot:row-details="row">
+        <b-card class="bg-transparent text-muted shadow-none">
           <b-card-text>Details for {{row.item.country}} will be displayed here</b-card-text>
-        </b-card>-->
-        <b-card class="bg-transparent text-warning shadow-none">
-          <ul>
-            <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value }}</li>
-          </ul>
         </b-card>
-      </template>
+      </template>-->
     </b-table>
   </div>
 </template>
@@ -93,7 +90,7 @@ export default {
   data() {
     return {
       fields: [
-        { key: "actions", label: "", class: "text-center" },
+        // { key: "actions", label: "", class: "text-center" },
         {
           key: "country",
           label: "Country",
