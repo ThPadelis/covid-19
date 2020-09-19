@@ -54,6 +54,7 @@
         >{{getRecoveredToday(row) | number('0,0', { thousandsSeparator: ',' }) }}</small>
       </template>
 
+      <!-- Actions -->
       <template v-slot:cell(actions)="row">
         <span @click="info(row.item, row.index, $event.target)" class="fal fa-star"></span>
         <span
@@ -62,6 +63,7 @@
         ></span>
       </template>
 
+      <!-- Details -->
       <template v-slot:row-details="row">
         <!-- <b-card class="bg-transparent text-muted shadow-none">
           <b-card-text>Details for {{row.item.country}} will be displayed here</b-card-text>
@@ -90,60 +92,58 @@ export default {
       default: "",
     },
   },
-  data() {
-    return {
-      fields: [
-        { key: "actions", label: "", class: "text-center" },
-        {
-          key: "country",
-          label: "Country",
-          sortable: true,
-          class: "country",
+  data: () => ({
+    fields: [
+      { key: "actions", label: "", class: "text-center" },
+      {
+        key: "country",
+        label: "Country",
+        sortable: true,
+        class: "country",
+      },
+      {
+        key: "cases",
+        label: "Confirmed",
+        sortable: true,
+      },
+      {
+        key: "deaths",
+        label: "Deceased",
+        sortable: true,
+      },
+      {
+        key: "critical",
+        label: "Critical",
+        sortable: true,
+      },
+      {
+        key: "active",
+        label: "Active",
+        sortable: true,
+      },
+      {
+        key: "tests",
+        label: "Tests",
+        sortable: true,
+      },
+      {
+        key: "recovered",
+        label: "Recovered",
+        sortable: true,
+      },
+      {
+        key: "updated",
+        label: "Last Reported",
+        formatter: (value /* key, item */) => {
+          return moment(value).fromNow();
         },
-        {
-          key: "cases",
-          label: "Confirmed",
-          sortable: true,
-        },
-        {
-          key: "deaths",
-          label: "Deceased",
-          sortable: true,
-        },
-        {
-          key: "critical",
-          label: "Critical",
-          sortable: true,
-        },
-        {
-          key: "active",
-          label: "Active",
-          sortable: true,
-        },
-        {
-          key: "tests",
-          label: "Tests",
-          sortable: true,
-        },
-        {
-          key: "recovered",
-          label: "Recovered",
-          sortable: true,
-        },
-        {
-          key: "updated",
-          label: "Last Reported",
-          formatter: (value /* key, item */) => {
-            return moment(value).fromNow();
-          },
-          sortable: true,
-          sortByFormatted: true,
-          filterByFormatted: true,
-        },
-      ],
-      filterOn: [],
-    };
-  },
+        sortable: true,
+        sortByFormatted: true,
+        filterByFormatted: true,
+      },
+    ],
+    filterOn: [],
+  }),
   methods: {
     getFlag(value) {
       const country = this.countries.find((c) => c.country === value);
@@ -160,10 +160,6 @@ export default {
     },
     info(item, index, button) {
       console.log({ item, index, button });
-    },
-    resetInfoModal() {
-      this.infoModal.title = "";
-      this.infoModal.content = "";
     },
   },
 };

@@ -15,5 +15,8 @@ export default {
     AppFooter: () =>
       import(/* webpackChunkName: "AppFooter" */ "@/components/Footer.vue"),
   },
+  metaInfo: {
+    titleTemplate: `%s | Coronavirus | ${window.location.host}`,
+  },
 };
 </script>

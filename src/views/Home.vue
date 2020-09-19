@@ -2,9 +2,9 @@
   <b-container class="home" fluid>
     <b-row>
       <b-col sm="12" md="3" lg="3" xl="3">
-        <updates
+        <!-- <updates
           text="Lorem ipsum dolor sit amet consectetur, adipisicing elit.Lorem ipsum dolor sit amet consectetur, adipisicing elit.Lorem ipsum dolor sit amet consectetur, adipisicing elit."
-        ></updates>
+        ></updates>-->
 
         <glance></glance>
       </b-col>
@@ -44,8 +44,8 @@ import { EventBus } from "../event-bus";
 export default {
   name: "Home",
   components: {
-    Updates: () =>
-      import(/* webpackChunkName: "updates" */ "@/components/Updates.vue"),
+    // Updates: () =>
+    //   import(/* webpackChunkName: "updates" */ "@/components/Updates.vue"),
     Glance: () =>
       import(/* webpackChunkName: "glance" */ "@/components/Glance.vue"),
     Continent: () =>
@@ -126,6 +126,9 @@ export default {
           return "fad fa-globe";
       }
     },
+  },
+  metaInfo: {
+    title: "Home",
   },
 };
 </script>

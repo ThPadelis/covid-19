@@ -78,6 +78,9 @@ export default {
       },
     ],
   }),
+  metaInfo: {
+    title: "About",
+  },
 };
 </script>
 
