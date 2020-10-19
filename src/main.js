@@ -9,12 +9,18 @@ import VueAxios from "vue-axios";
 import Vue2Filters from "vue2-filters";
 import VueClipboard from "vue-clipboard2";
 import VueMeta from "vue-meta";
+import VueGtag from "vue-gtag";
+
+
 
 Vue.use(BootstrapVue);
 Vue.use(VueClipboard);
 Vue.use(Vue2Filters);
 Vue.use(VueAxios, Axios);
 Vue.use(VueMeta);
+Vue.use(VueGtag, {
+  config: { id: "UA-168088174-2" }
+});
 
 Vue.config.productionTip = false;
 
