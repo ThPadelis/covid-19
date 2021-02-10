@@ -26,7 +26,7 @@ export default {
       }
     },
     location() {
-      return window.location.origin;
+      return window.location.href;
     },
   },
   methods: {
